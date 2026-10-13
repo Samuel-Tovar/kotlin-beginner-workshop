@@ -1,3 +1,5 @@
+package exercise02
+
 class Estudiante(
     val nombre: String,
     val nota1: Double,
