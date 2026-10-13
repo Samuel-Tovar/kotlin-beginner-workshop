@@ -1,58 +1,156 @@
 package exercise07
 
+// =====================================================
+// CLASE CONTACT
+// =====================================================
+
 class Contact(
     val nombre: String,
     val telefono: String,
     val correo: String
 )
 
-fun agregarContacto(lista: MutableList<Contact>, contacto: Contact) {
+
+// =====================================================
+// AGREGAR CONTACTO
+// =====================================================
+
+fun agregarContacto(lista: MutableList<Contact>) {
+
+    println("\n========== Agregar contacto ==========")
+
+    print("Ingrese el nombre: ")
+    val nombre = readln()
+
+    print("Ingrese el teléfono: ")
+    val telefono = readln()
+
+    print("Ingrese el correo: ")
+    val correo = readln()
+
+    val contacto = Contact(
+        nombre,
+        telefono,
+        correo
+    )
+
     lista.add(contacto)
-    println("Contacto agregado: ${contacto.nombre}")
+
+    println("Contacto agregado correctamente.")
 }
 
-fun listarContactos(lista: MutableList<Contact>) {
 
-    println("Lista de contactos:")
+// =====================================================
+// LISTAR CONTACTOS
+// =====================================================
 
-    for (contacto in lista) {
-        println(
-            "Nombre: ${contacto.nombre} | " +
-                    "Teléfono: ${contacto.telefono} | " +
-                    "Correo: ${contacto.correo}"
-        )
+fun listarContactos(lista: List<Contact>) {
+
+    if (lista.isEmpty()) {
+        println("No hay contactos registrados.")
+        return
+    }
+
+    println("\n========== Lista de contactos ==========")
+
+    for ((indice, contacto) in lista.withIndex()) {
+
+        println("\nContacto ${indice + 1}")
+        println("Nombre: ${contacto.nombre}")
+        println("Teléfono: ${contacto.telefono}")
+        println("Correo: ${contacto.correo}")
     }
 }
 
-fun buscarContacto(lista: MutableList<Contact>, nombre: String) {
+
+// =====================================================
+// BUSCAR CONTACTO
+// =====================================================
+
+fun buscarContacto(lista: List<Contact>) {
+
+    if (lista.isEmpty()) {
+        println("No hay contactos registrados.")
+        return
+    }
+
+    print("Ingrese el nombre del contacto a buscar: ")
+
+    val nombre = readln()
 
     val contactoEncontrado = lista.find {
         it.nombre.equals(nombre, ignoreCase = true)
     }
 
     if (contactoEncontrado != null) {
-        println("Contacto encontrado:")
+
+        println("\n========== Contacto encontrado ==========")
         println("Nombre: ${contactoEncontrado.nombre}")
         println("Teléfono: ${contactoEncontrado.telefono}")
         println("Correo: ${contactoEncontrado.correo}")
+
     } else {
-        println("El contacto $nombre no existe")
+
+        println("El contacto $nombre no existe.")
     }
 }
 
-fun eliminarContacto(lista: MutableList<Contact>, nombre: String) {
+
+// =====================================================
+// ELIMINAR CONTACTO
+// =====================================================
+
+fun eliminarContacto(lista: MutableList<Contact>) {
+
+    if (lista.isEmpty()) {
+        println("No hay contactos registrados.")
+        return
+    }
+
+    print("Ingrese el nombre del contacto a eliminar: ")
+
+    val nombre = readln()
 
     val contactoEncontrado = lista.find {
         it.nombre.equals(nombre, ignoreCase = true)
     }
 
     if (contactoEncontrado != null) {
+
         lista.remove(contactoEncontrado)
-        println("Contacto eliminado: $nombre")
+
+        println("Contacto eliminado correctamente.")
+
     } else {
-        println("El contacto $nombre no existe")
+
+        println("El contacto $nombre no existe.")
     }
 }
+
+
+// =====================================================
+// MENÚ
+// =====================================================
+
+fun mostrarMenu() {
+
+    println(
+        """
+        ======== Agenda de contactos ========
+        1. Agregar contacto
+        2. Listar contactos
+        3. Buscar contacto
+        4. Eliminar contacto
+        0. Salir
+        =====================================
+        """.trimIndent()
+    )
+}
+
+
+// =====================================================
+// MAIN
+// =====================================================
 
 fun main() {
 
@@ -64,24 +162,36 @@ fun main() {
         Contact("Maria", "3045678901", "maria@gmail.com")
     )
 
-    listarContactos(contactos)
+    var ejecutando = true
 
-    println()
+    while (ejecutando) {
 
-    agregarContacto(
-        contactos,
-        Contact("Pedro", "3056789012", "pedro@gmail.com")
-    )
+        println()
 
-    println()
+        mostrarMenu()
 
-    buscarContacto(contactos, "Laura")
+        print("Seleccione una opción: ")
 
-    println()
+        val opcion = readln().toIntOrNull()
 
-    eliminarContacto(contactos, "Carlos")
+        when (opcion) {
 
-    println()
+            1 -> agregarContacto(contactos)
 
-    listarContactos(contactos)
+            2 -> listarContactos(contactos)
+
+            3 -> buscarContacto(contactos)
+
+            4 -> eliminarContacto(contactos)
+
+            0 -> {
+                println("Saliendo de la agenda...")
+                ejecutando = false
+            }
+
+            else -> {
+                println("Opción inválida.")
+            }
+        }
+    }
 }
